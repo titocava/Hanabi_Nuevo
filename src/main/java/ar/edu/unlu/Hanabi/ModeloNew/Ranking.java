@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class Ranking implements Serializable {
     @Serial
     private static final long serialVersionUID = 17L;
-    private final Map<String, AgregarRegistroRanking> ranking;
+    private final Map<String, RegistroRanking> ranking;
 
     public Ranking() {
         this.ranking = new HashMap<>();
@@ -21,18 +21,18 @@ public class Ranking implements Serializable {
                 .sorted()
                 .collect(Collectors.joining("-"));
         if (rankingExistente.ranking.containsKey(identificadorEquipo)) {
-            AgregarRegistroRanking entradaExistente = rankingExistente.ranking.get(identificadorEquipo);
+            RegistroRanking entradaExistente = rankingExistente.ranking.get(identificadorEquipo);
             entradaExistente.setPuntosTotales(entradaExistente.getPuntosTotales() + puntos);
             entradaExistente.setPartidasJugadas(entradaExistente.getPartidasJugadas() + 1);
         } else {
-            AgregarRegistroRanking nuevoRegistro = new AgregarRegistroRanking(puntos, 1);
+            RegistroRanking nuevoRegistro = new RegistroRanking(puntos, 1);
             rankingExistente.ranking.put(identificadorEquipo, nuevoRegistro);
         }
         rankingExistente.guardarEnArchivo();
     }
 
 
-    public Map<String, AgregarRegistroRanking> getRankingMap() {
+    public Map<String, RegistroRanking> getRankingMap() {
         return ranking;
     }
 
@@ -47,7 +47,7 @@ public class Ranking implements Serializable {
                 .sorted((entry1, entry2) -> Integer.compare(entry2.getValue().getPuntosTotales(), entry1.getValue().getPuntosTotales()))
                 .forEach(entry -> {
                     String identificadorEquipo = entry.getKey();
-                    AgregarRegistroRanking equipo = entry.getValue();
+                    RegistroRanking equipo = entry.getValue();
 
                     sb.append("Equipo: ").append(identificadorEquipo);
                     sb.append(" -> Puntos: ").append(equipo.getPuntosTotales());
